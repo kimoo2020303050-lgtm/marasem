@@ -114,7 +114,7 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
     <div id="successBox" class="hidden mt-6 bg-ink text-cream rounded-3xl p-6 text-center">
       <div class="font-vibes text-4xl gold-text">Congratulations</div>
       <h3 class="font-ruqaa text-2xl mt-2">دعوتك جاهزة يا <span id="sNames"></span> 🎉</h3>
-      <p class="text-cream/70 text-sm mt-2">ده اللينك الخاص بدعوتك — شاركه مع معازيمك واتساب:</p>
+      <p class="text-cream/70 text-sm mt-2" id="sIntro">ده اللينك الخاص بدعوتك — شاركه مع معازيمك واتساب:</p>
       <div class="bg-white/10 rounded-xl px-4 py-3 mt-3 font-bold break-all text-gold-light" id="sLink" dir="ltr"></div>
       <div id="sQr" class="bg-white rounded-2xl p-3 w-[168px] h-[168px] mx-auto mt-4 flex items-center justify-center"></div>
       <p class="text-sm mt-3">الباقة: <b id="sPackage" class="text-gold-light"></b></p>
@@ -125,6 +125,15 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
         <a class="btn-outline !bg-transparent !text-cream !border-cream/50 !py-2.5" id="openInvite" target="_blank" rel="noopener">افتح الدعوة</a>
       </div>
       <p class="text-xs mt-4 text-cream/70">📲 لإرسال الدعوة لكل ضيف باسمه: ادخل قسم «إدارة دعوتي» تحت بنفس الكود والرقم السري وولّد روابط ضيوفك وابعتها واتساب.</p>
+      <div id="payBlock" class="hidden bg-white/10 rounded-2xl p-4 mt-4" style="text-align:right">
+        <p class="font-bold text-gold-light">⏳ خطوة أخيرة: فعّل دعوتك بالدفع</p>
+        <p class="text-sm text-cream/80 mt-2 leading-7">حوّل <b id="payAmount" class="text-gold-light"></b> على اتصالات كاش:<br><b id="payNumber" class="text-lg" dir="ltr" style="letter-spacing:.08em"></b></p>
+        <div class="flex gap-3 justify-center mt-3 flex-wrap">
+          <a class="btn-gold !py-2" id="payWaBtn" target="_blank" rel="noopener">✔️ حوّلت — أكّد على واتساب</a>
+          <a class="btn-outline !bg-transparent !text-cream !border-cream/50 !py-2" id="ownerPreviewBtn" target="_blank" rel="noopener">👁️ عاين دعوتك قبل التفعيل</a>
+        </div>
+        <p class="text-xs text-cream/60 mt-3 leading-6">هنفعّل دعوتك فور وصول التحويل. اللينك اللي فوق هيبدأ يشتغل للمعازيم بعد التفعيل، وانت تقدر تعاين دعوتك دلوقتي من زرار المعاينة.</p>
+      </div>
       <p id="demoNote" class="hidden text-xs mt-4 text-gold-light">⚠️ وضع تجريبي: الدعوة محفوظة على هذا الجهاز فقط (الخادم غير مربوط بعد) — اللينك هيشتغل على نفس المتصفح للتجربة.</p>
     </div>
   </div>
@@ -232,6 +241,12 @@ document.querySelectorAll('input[name="package"]').forEach(r=>r.addEventListener
   }
 }));
 
+/* ============ الدفع والتفعيل ============ */
+const PAY = { number:"01132959255", whatsapp:"201132959255" };
+const PKG_PRICE = { basic:350, premium:550 };
+const PKG_NAME = { basic:"الأساسية", premium:"المميزة" };
+function payWaLink(code, pkg){ const amt=PKG_PRICE[pkg]||PKG_PRICE.basic; return "https://wa.me/"+PAY.whatsapp+"?text="+encodeURIComponent(`أهلاً مراسم 💛 حوّلت ${amt} ج (باقة ${PKG_NAME[pkg]||pkg}) لتفعيل دعوتي ${code}`); }
+
 /* ============ توليد الكود والرابط ============ */
 function genCode(){
   const chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s="";
@@ -257,7 +272,7 @@ $("#createForm").addEventListener("submit", async e=>{
     mapsUrl, mapsEmbed: mapsUrl ? "" : "https://www.google.com/maps?q="+encodeURIComponent((fd.get("venueName")||"")+" "+(fd.get("venueAddress")||""))+"&output=embed",
     heroImage:fd.get("heroImage"), galleryUrls:fd.get("galleryUrls"),
     story:fd.get("story"), creatorPhone:fd.get("creatorPhone"), package:fd.get("package")||"basic", musicUrl:fd.get("musicUrl"),
-    createdAt:new Date().toISOString()
+    createdAt:new Date().toISOString(), status:"active"
   };
   let local=false;
   try{
@@ -266,10 +281,10 @@ $("#createForm").addEventListener("submit", async e=>{
     } else { local=true; }
   }catch(err){ local=true; }
   if(local){ const all=JSON.parse(localStorage.getItem("marasem_invitations")||"{}"); all[code]=inv; localStorage.setItem("marasem_invitations",JSON.stringify(all)); }
-  showSuccess(inv, local);
+  showSuccess(inv, local, fd.get("pin"));
   btn.disabled=false; btn.textContent="أنشئ دعوتي واحصل على اللينك ✨";
 });
-function showSuccess(inv, local){
+function showSuccess(inv, local, pin){
   const url=inviteUrl(inv.code);
   const PKGS={basic:"الأساسية — 350 ج",premium:"المميزة — 550 ج"}; $("#sPackage").textContent = PKGS[inv.package]||inv.package||"";
   $("#sNames").textContent = `${inv.groomName} & ${inv.brideName}`;
@@ -277,6 +292,15 @@ function showSuccess(inv, local){
   $("#openInvite").href=url;
   $("#waShare").href="https://wa.me/?text="+encodeURIComponent("دعوة زفافنا 💍 "+url);
   $("#demoNote").classList.toggle("hidden", !local);
+  const pending = !local;
+  $("#payBlock").classList.toggle("hidden", !pending);
+  $("#sIntro").textContent = pending ? "دعوتك اتعملت وهي دلوقتي قيد التفعيل — كمّل خطوة الدفع وهتشتغل لمعازيمك فوراً:" : "ده اللينك الخاص بدعوتك — شاركه مع معازيمك واتساب:";
+  if(pending){
+    $("#payAmount").textContent = (PKG_PRICE[inv.package]||350)+" ج";
+    $("#payNumber").textContent = PAY.number;
+    $("#payWaBtn").href = payWaLink(inv.code, inv.package);
+    $("#ownerPreviewBtn").href = url+"&preview="+encodeURIComponent(pin||"");
+  }
   const box=$("#sQr"); box.innerHTML="";
   if(window.QRCode) new QRCode(box,{text:url,width:144,height:144,colorDark:"#0F1F1C",colorLight:"#ffffff"});
   const sb=$("#successBox"); sb.classList.remove("hidden"); sb.scrollIntoView({behavior:"smooth"});
@@ -303,6 +327,10 @@ $("#manageForm").addEventListener("submit", async e=>{
   }
   if(!data||!data.ok){ $("#manageStatus").textContent="❌ الكود أو الرقم السري غير صحيح — أو الخادم غير مربوط بعد"; $("#manageStatus").style.color="#b91c1c"; return; }
   $("#manageStatus").textContent="";
+  const invD=data.invitation||{}; const invSt=String(invD.Status||invD.status||"active").toLowerCase(); const invPkg=invD.Package||invD.package||"basic";
+  const statusHtml = invSt!=="active"
+    ? `<div class="rounded-2xl p-4 mt-4 text-sm leading-7" style="background:#FEF3C7;border:1px solid rgba(201,162,75,.5)">⏳ <b>دعوتك قيد التفعيل</b> — حوّل ${PKG_PRICE[invPkg]||350} ج على اتصالات كاش: <b dir="ltr">${PAY.number}</b> ثم <a class="text-gold-dark font-bold underline" target="_blank" href="${payWaLink(code, invPkg)}">أكّد التحويل على واتساب</a> وهنفعّلها فوراً. <a class="text-gold-dark font-bold underline" target="_blank" href="${inviteUrl(code)}&preview=${encodeURIComponent(pin)}">عاين دعوتك 👁️</a></div>`
+    : `<p class="text-sm mt-4">حالة الدعوة: <b style="color:#15803d">مفعّلة ✅</b></p>`;
   const s=data.stats||{};
   $("#manageResult").innerHTML=`
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center text-sm">
@@ -312,6 +340,7 @@ $("#manageForm").addEventListener("submit", async e=>{
       <div class="bg-cream rounded-2xl p-4"><b class="block text-2xl text-gold-dark">${s.wishes??0}</b>تهنئة</div>
     </div>
     <p class="text-sm mt-4">🔗 لينك دعوتك: <a class="text-gold-dark font-bold break-all" target="_blank" href="${inviteUrl(code)}">${inviteUrl(code)}</a></p>
+    ${statusHtml}
     ${(data.rsvps&&data.rsvps.length)?`<h4 class="font-bold mt-5 mb-2">أحدث الردود</h4>`+data.rsvps.slice(0,30).map(r=>`<div class="flex justify-between bg-ivory border border-gold/25 rounded-xl px-4 py-2.5 text-sm mb-2"><span><b>${esc(r.name)}</b> <span class="text-ink/50">${esc(r.phone||"")}</span></span><span>${r.attending==="yes"?"✅ حاضر":r.attending==="no"?"❌ يعتذر":"ربما"}${+r.guests?` +${r.guests}`:""}</span></div>`).join(""):`<p class="text-sm text-ink/55 mt-4">لا توجد ردود حضور بعد — شارك اللينك مع معازيمك.</p>`}`;
   $("#manageResult").classList.remove("hidden");
   renderGuestTools(code, data.invitation||{});
