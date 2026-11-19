@@ -93,12 +93,12 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
           <label class="!p-0 cursor-pointer"><input type="radio" name="package" value="basic" class="!w-auto" style="display:none">
             <div class="pkg-card border rounded-2xl p-4 h-full" data-pkg="basic" style="border-color:rgba(201,162,75,.4)">
               <div class="flex items-center justify-between"><b>الباقة الأساسية</b><b class="text-gold-dark text-xl">350 ج</b></div>
-              <ul class="text-xs leading-6 mt-2 text-ink/60"><li>✓ قالب من قوالب مراسم + لينك خاص</li><li>✓ عدّاد تنازلي + خريطة القاعة</li><li>✓ تأكيد حضور RSVP + كارت QR</li></ul>
+              <ul class="text-xs leading-6 mt-2 text-ink/60"><li>✓ 10 قوالب ناعمة وبسيطة وتراثية + لينك خاص</li><li>✓ عدّاد تنازلي + خريطة القاعة</li><li>✓ تأكيد حضور RSVP + كارت QR</li></ul>
             </div></label>
           <label class="!p-0 cursor-pointer"><input type="radio" name="package" value="premium" class="!w-auto" style="display:none" checked>
             <div class="pkg-card border-2 rounded-2xl p-4 h-full" data-pkg="premium" style="border-color:#C9A24B;background:#FBF3DF">
               <div class="flex items-center justify-between"><b>الباقة المميزة ⭐</b><b class="text-gold-dark text-xl">550 ج</b></div>
-              <ul class="text-xs leading-6 mt-2 text-ink/60"><li>✓ كل مميزات الأساسية</li><li>✓ فتح دعوة سينمائي + موسيقى خاصة</li><li>✓ معرض صور موسّع + دفتر تهاني</li><li>✓ كارت QR باسم كل ضيف + أولوية دعم</li></ul>
+              <ul class="text-xs leading-6 mt-2 text-ink/60"><li>✓ كل مميزات الأساسية + <b>القوالب الفاخرة الأربعة ⭐</b></li><li>✓ فتح دعوة سينمائي + موسيقى خاصة</li><li>✓ معرض صور موسّع + دفتر تهاني</li><li>✓ كارت QR باسم كل ضيف + أولوية دعم</li></ul>
             </div></label>
         </div>
       </div>
@@ -159,12 +159,12 @@ const PLATFORM = {
 function scriptReady(){ return PLATFORM.APPS_SCRIPT_URL && !PLATFORM.APPS_SCRIPT_URL.startsWith("PUT_"); }
 
 const TEMPLATES = [
-  {id:"royal", cat:"ملكية", name:"الملكي الذهبي", desc:"أخضر غامق × ذهبي شامبين — فخامة كلاسيكية", bg:"#0F1F1C", fg:"#F5EEDD", accent:"#E7CE8C", font:"'Great Vibes',cursive"},
+  {id:"royal", tier:"premium", cat:"ملكية", name:"الملكي الذهبي", desc:"أخضر غامق × ذهبي شامبين — فخامة كلاسيكية", bg:"#0F1F1C", fg:"#F5EEDD", accent:"#E7CE8C", font:"'Great Vibes',cursive"},
   {id:"rose", cat:"ناعمة", name:"الوردي الرومانسي", desc:"وردي باستيل × روز جولد — نعومة ورومانسية", bg:"#FBEEE9", fg:"#6D3B47", accent:"#C98A94", font:"'Great Vibes',cursive"},
   {id:"ivory", cat:"بسيطة", name:"العاجي البسيط", desc:"أبيض عاجي × أخضر مريمي — بساطة راقية ونهارية", bg:"#FBF7EF", fg:"#33544D", accent:"#9DB89A", font:"'Great Vibes',cursive"},
-  {id:"night", cat:"ملكية", name:"الليلي الفاخر", desc:"كحلي ليلي × فضي وذهبي — سهرة ملكية", bg:"#10182B", fg:"#EDEFF5", accent:"#C9A24B", font:"'Great Vibes',cursive"},
-  {id:"burgundy", cat:"ملكية", name:"العنابي الملكي", desc:"عنابي عميق × وردي ذهبي — دفء وفخامة", bg:"#2A060D", fg:"#F7E8E4", accent:"#E8B4B8", font:"'Great Vibes',cursive"},
-  {id:"noir", cat:"ملكية", name:"الأسود الفاخر", desc:"أسود × ذهبي — أقصى درجات الفخامة الجريئة", bg:"#000000", fg:"#F5EEDD", accent:"#E7CE8C", font:"'Great Vibes',cursive"},
+  {id:"night", tier:"premium", cat:"ملكية", name:"الليلي الفاخر", desc:"كحلي ليلي × فضي وذهبي — سهرة ملكية", bg:"#10182B", fg:"#EDEFF5", accent:"#C9A24B", font:"'Great Vibes',cursive"},
+  {id:"burgundy", tier:"premium", cat:"ملكية", name:"العنابي الملكي", desc:"عنابي عميق × وردي ذهبي — دفء وفخامة", bg:"#2A060D", fg:"#F7E8E4", accent:"#E8B4B8", font:"'Great Vibes',cursive"},
+  {id:"noir", tier:"premium", cat:"ملكية", name:"الأسود الفاخر", desc:"أسود × ذهبي — أقصى درجات الفخامة الجريئة", bg:"#000000", fg:"#F5EEDD", accent:"#E7CE8C", font:"'Great Vibes',cursive"},
   {id:"andalus", cat:"تراثية", name:"الأندلسي", desc:"زمردي × طيني — روح الأندلس والزخارف", bg:"#0E2A30", fg:"#F3E9D7", accent:"#E4B78F", font:"'Great Vibes',cursive"},
   {id:"mihrab", cat:"تراثية", name:"المحراب", desc:"زمردي فاتح × ذهبي — طابع إسلامي هادئ", bg:"#07231A", fg:"#E9F2E4", accent:"#9FD4B4", font:"'Great Vibes',cursive"},
   {id:"desert", cat:"تراثية", name:"رمال ذهبية", desc:"رملي × برونزي — دفء الصحراء العربية", bg:"#2E1F0C", fg:"#F7ECD4", accent:"#E8CF9E", font:"'Great Vibes',cursive"},
@@ -192,7 +192,7 @@ function renderTemplates(){
       <div class="text-xs opacity-75 mt-1">الجمعة • 18 ديسمبر 2026</div>
       <div class="mt-3 text-xs font-bold px-4 py-1.5 rounded-full" style="background:${t.accent};color:${t.id==="rose"||t.id==="ivory"?"#fff":"#10182B"}">افتح الدعوة</div>
     </div>
-    <h3 class="font-bold mt-3">${t.name} <span class="text-[10px] align-middle bg-cream text-gold-dark font-bold px-2 py-0.5 rounded-full">${t.cat||""}</span></h3>
+    <h3 class="font-bold mt-3">${t.name} <span class="text-[10px] align-middle bg-cream text-gold-dark font-bold px-2 py-0.5 rounded-full">${t.cat||""}</span>${t.tier==="premium"?' <span class="text-[10px] align-middle font-bold px-2 py-0.5 rounded-full" style="background:#C9A24B;color:#0F1F1C">⭐ مميزة 550</span>':""}</h3>
     <p class="text-xs text-ink/55 leading-5 mt-1">${t.desc}</p>
     <div class="flex gap-2 mt-3">
       <button class="btn-gold flex-1 !py-2 text-sm pick-btn" data-tpl="${t.id}">اختر هذا القالب</button>
@@ -202,7 +202,17 @@ function renderTemplates(){
   document.querySelectorAll(".pick-btn").forEach(b=>b.onclick=()=>chooseTpl(b.dataset.tpl,true));
   document.querySelectorAll(".tpl").forEach(c=>c.addEventListener("click",e=>{ if(e.target.tagName!=="A"&&e.target.tagName!=="BUTTON") chooseTpl(c.dataset.tpl,false); }));
 }
+function currentPackage(){ const r=document.querySelector('input[name="package"]:checked'); return r?r.value:"basic"; }
+function setPackage(v){
+  const r=document.querySelector(`input[name="package"][value="${v}"]`); if(!r) return;
+  r.checked=true; r.dispatchEvent(new Event("change"));
+}
 function chooseTpl(id,scroll){
+  const t=TEMPLATES.find(x=>x.id===id);
+  if(t && t.tier==="premium" && currentPackage()!=="premium"){
+    setPackage("premium");
+    toast("⭐ القالب ده من قوالب الباقة المميزة — بدّلنا باقتك للمميزة 550 ج");
+  }
   chosen=id; $("#fTemplate").value=id;
   $("#chosenTplName").textContent=(TEMPLATES.find(t=>t.id===id)||{}).name||id;
   document.querySelectorAll(".tpl").forEach(c=>c.classList.toggle("sel",c.dataset.tpl===id));
@@ -216,6 +226,10 @@ document.querySelectorAll(".tpl-filter").forEach(b=>b.onclick=()=>{
 });
 document.querySelectorAll('input[name="package"]').forEach(r=>r.addEventListener("change",()=>{
   document.querySelectorAll(".pkg-card").forEach(c=>{ const on=c.dataset.pkg===r.value&&r.checked; c.style.borderColor=on?"#C9A24B":"rgba(201,162,75,.4)"; c.style.background=on?"#FBF3DF":""; });
+  if(r.checked && r.value==="basic"){
+    const t=TEMPLATES.find(x=>x.id===chosen);
+    if(t && t.tier==="premium"){ chooseTpl("rose",false); toast("القوالب الفاخرة متاحة في الباقة المميزة بس — اخترنا لك الوردي الرومانسي مؤقتاً"); }
+  }
 }));
 
 /* ============ توليد الكود والرابط ============ */
