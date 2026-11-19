@@ -1,7 +1,7 @@
 /* Service Worker — MARASEM — مراسم PWA
    Shell: Cache-First | Google Sheets (GViz) & Apps Script: Network-Only (بيانات حية دائماً) */
 const CACHE = "marasem-pwa-v1";
-const SHELL = ["./", "./index.html", "./manifest.json", "./icons/icon-192.png", "./icons/icon-512.png"];
+const SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
