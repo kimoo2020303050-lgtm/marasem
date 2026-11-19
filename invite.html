@@ -179,6 +179,16 @@
     <div class="flex gap-3 justify-center mt-6 flex-wrap"><button id="copyLinkBtn" class="btn-outline">نسخ رابط دعوتي</button></div>
   </section>
 
+  <div id="pendingScreen" class="hidden" style="position:fixed;inset:0;z-index:70;background:#0F1F1C;color:#F7F1E3;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
+    <div>
+      <div class="font-vibes" style="font-size:3rem;color:#C9A24B">Marasem</div>
+      <div style="font-size:2.4rem;margin:8px 0">⏳</div>
+      <h1 class="font-ruqaa" style="font-size:1.6rem">هذه الدعوة قيد التفعيل</h1>
+      <p style="opacity:.75;margin-top:10px;line-height:1.9">صانع الدعوة لم يفعّلها بعد — وبمجرد التفعيل ستُفتح هنا فوراً.<br>شكراً لصبرك 💛</p>
+      <p style="opacity:.5;font-size:.8rem;margin-top:18px">مراسم | MARASEM — دعوات رقمية فاخرة</p>
+    </div>
+  </div>
+  <div id="ownerBanner" class="hidden" style="position:fixed;top:0;left:0;right:0;z-index:65;background:#C9A24B;color:#0F1F1C;text-align:center;font-size:.85rem;font-weight:700;padding:8px">👁️ معاينة المالك — الدعوة دي لسه مش مفعّلة للمعازيم</div>
   <div id="notFound" class="hidden card p-8 text-center mt-10">
     <h2 class="font-ruqaa text-2xl">الدعوة غير موجودة</h2>
     <p class="text-sm mt-2" style="color:var(--muted)">تأكد من اللينك، أو اصنع دعوتك الخاصة من منصة مراسم.</p>
@@ -261,7 +271,7 @@ function mapRow_(row){
   if(row.GroomName===undefined && row.groomName!==undefined) return row;
   return { template:row.Template||"royal", groomName:row.GroomName||"", brideName:row.BrideName||"", groomLatin:row.GroomLatin||"", brideLatin:row.BrideLatin||"",
     weddingDate:row.WeddingDate||"", weddingTime:row.WeddingTime||"", venueName:row.VenueName||"", venueAddress:row.VenueAddress||"", mapsUrl:row.MapsUrl||"", mapsEmbed:row.MapsEmbed||"",
-    heroImage:row.HeroImage||"", galleryUrls:row.GalleryUrls||"", story:row.Story||"", musicUrl:row.MusicUrl||"", package:row.Package||"" };
+    heroImage:row.HeroImage||"", galleryUrls:row.GalleryUrls||"", story:row.Story||"", musicUrl:row.MusicUrl||"", package:row.Package||"", status:row.Status||"active", pinHash:row.PinHash||"" };
 }
 async function fetchFromScript(code){
   const r=await fetch(PLATFORM.APPS_SCRIPT_URL+"?action=get&code="+encodeURIComponent(code));
@@ -282,6 +292,7 @@ async function fetchFromSheet(code){
 }
 function fetchLocal(code){ const all=JSON.parse(localStorage.getItem("marasem_invitations")||"{}"); const inv=all[code]; if(!inv) throw new Error("not local"); return inv; }
 
+function sha256hex(str){ return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)).then(b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")); }
 async function loadInvitation(){
   const demoMode = params.get("demo")==="1";
   if(demoMode){ INV={...DEMO, template:params.get("template")||"royal"}; loadGuestbook(); render(); return; }
@@ -289,6 +300,13 @@ async function loadInvitation(){
   const sources=[]; if(scriptReady()) sources.push(fetchFromScript); if(sheetReady()) sources.push(fetchFromSheet); sources.push(fetchLocal);
   for(const src of sources){ try{ INV=await src(CODE); break; }catch(e){} }
   if(!INV){ $("#notFound").classList.remove("hidden"); $("#envelope").classList.add("opened"); document.body.style.overflow=""; return; }
+  const st=String(INV.status||"active").toLowerCase();
+  if(st!=="active"){
+    let owner=false; const pv=params.get("preview");
+    if(pv && INV.pinHash){ try{ owner=(await sha256hex(pv+"::"+CODE))===String(INV.pinHash).toLowerCase(); }catch(e){} }
+    if(!owner){ $("#envelope").classList.add("hidden"); $("#pendingScreen").classList.remove("hidden"); document.body.style.overflow=""; return; }
+    $("#ownerBanner").classList.remove("hidden");
+  }
   loadGuestbook(); render();
 }
 
