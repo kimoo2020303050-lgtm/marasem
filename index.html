@@ -60,7 +60,14 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
 
 <!-- Templates -->
 <section id="templates" class="max-w-6xl mx-auto px-4 py-10">
-  <div class="text-center mb-7"><div class="ornament mb-2">✦ ✦ ✦</div><h2 class="font-ruqaa text-3xl">اختر قالب دعوتك</h2><p class="text-ink/60 text-sm mt-1">اضغط على القالب لاختياره، أو جرّب معاينته الحية ببيانات تجريبية</p></div>
+  <div class="text-center mb-7"><div class="ornament mb-2">✦ ✦ ✦</div><h2 class="font-ruqaa text-3xl">اختر قالب دعوتك</h2><p class="text-ink/60 text-sm mt-1"><b id="tplCount"></b> — اضغط على القالب لاختياره، أو جرّب معاينته الحية ببيانات تجريبية</p></div>
+  <div class="flex gap-2 justify-center flex-wrap mb-6" id="tplFilters">
+    <button type="button" class="btn-gold !py-1.5 !px-4 text-sm tpl-filter" data-cat="الكل">الكل</button>
+    <button type="button" class="btn-outline !py-1.5 !px-4 text-sm tpl-filter" data-cat="ملكية">ملكية</button>
+    <button type="button" class="btn-outline !py-1.5 !px-4 text-sm tpl-filter" data-cat="ناعمة">ناعمة</button>
+    <button type="button" class="btn-outline !py-1.5 !px-4 text-sm tpl-filter" data-cat="بسيطة">بسيطة ونهارية</button>
+    <button type="button" class="btn-outline !py-1.5 !px-4 text-sm tpl-filter" data-cat="تراثية">تراثية وإسلامية</button>
+  </div>
   <div id="tplGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
 </section>
 
@@ -117,6 +124,7 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
         <a class="btn-outline !bg-transparent !text-cream !border-cream/50 !py-2.5" id="waShare" target="_blank" rel="noopener">مشاركة واتساب</a>
         <a class="btn-outline !bg-transparent !text-cream !border-cream/50 !py-2.5" id="openInvite" target="_blank" rel="noopener">افتح الدعوة</a>
       </div>
+      <p class="text-xs mt-4 text-cream/70">📲 لإرسال الدعوة لكل ضيف باسمه: ادخل قسم «إدارة دعوتي» تحت بنفس الكود والرقم السري وولّد روابط ضيوفك وابعتها واتساب.</p>
       <p id="demoNote" class="hidden text-xs mt-4 text-gold-light">⚠️ وضع تجريبي: الدعوة محفوظة على هذا الجهاز فقط (الخادم غير مربوط بعد) — اللينك هيشتغل على نفس المتصفح للتجربة.</p>
     </div>
   </div>
@@ -151,10 +159,20 @@ const PLATFORM = {
 function scriptReady(){ return PLATFORM.APPS_SCRIPT_URL && !PLATFORM.APPS_SCRIPT_URL.startsWith("PUT_"); }
 
 const TEMPLATES = [
-  {id:"royal", name:"الملكي الذهبي", desc:"أخضر غامق × ذهبي شامبين — فخامة كلاسيكية", bg:"#0F1F1C", fg:"#F5EEDD", accent:"#E7CE8C", font:"'Great Vibes',cursive"},
-  {id:"rose", name:"الوردي الرومانسي", desc:"وردي باستيل × روز جولد — نعومة ورومانسية", bg:"#FBEEE9", fg:"#6D3B47", accent:"#C98A94", font:"'Great Vibes',cursive"},
-  {id:"ivory", name:"العاجي البسيط", desc:"أبيض عاجي × أخضر مريمي — بساطة راقية ونهارية", bg:"#FBF7EF", fg:"#33544D", accent:"#9DB89A", font:"'Great Vibes',cursive"},
-  {id:"night", name:"الليلي الفاخر", desc:"كحلي ليلي × فضي وذهبي — سهرة ملكية", bg:"#10182B", fg:"#EDEFF5", accent:"#C9A24B", font:"'Great Vibes',cursive"}
+  {id:"royal", cat:"ملكية", name:"الملكي الذهبي", desc:"أخضر غامق × ذهبي شامبين — فخامة كلاسيكية", bg:"#0F1F1C", fg:"#F5EEDD", accent:"#E7CE8C", font:"'Great Vibes',cursive"},
+  {id:"rose", cat:"ناعمة", name:"الوردي الرومانسي", desc:"وردي باستيل × روز جولد — نعومة ورومانسية", bg:"#FBEEE9", fg:"#6D3B47", accent:"#C98A94", font:"'Great Vibes',cursive"},
+  {id:"ivory", cat:"بسيطة", name:"العاجي البسيط", desc:"أبيض عاجي × أخضر مريمي — بساطة راقية ونهارية", bg:"#FBF7EF", fg:"#33544D", accent:"#9DB89A", font:"'Great Vibes',cursive"},
+  {id:"night", cat:"ملكية", name:"الليلي الفاخر", desc:"كحلي ليلي × فضي وذهبي — سهرة ملكية", bg:"#10182B", fg:"#EDEFF5", accent:"#C9A24B", font:"'Great Vibes',cursive"},
+  {id:"burgundy", cat:"ملكية", name:"العنابي الملكي", desc:"عنابي عميق × وردي ذهبي — دفء وفخامة", bg:"#2A060D", fg:"#F7E8E4", accent:"#E8B4B8", font:"'Great Vibes',cursive"},
+  {id:"noir", cat:"ملكية", name:"الأسود الفاخر", desc:"أسود × ذهبي — أقصى درجات الفخامة الجريئة", bg:"#000000", fg:"#F5EEDD", accent:"#E7CE8C", font:"'Great Vibes',cursive"},
+  {id:"andalus", cat:"تراثية", name:"الأندلسي", desc:"زمردي × طيني — روح الأندلس والزخارف", bg:"#0E2A30", fg:"#F3E9D7", accent:"#E4B78F", font:"'Great Vibes',cursive"},
+  {id:"mihrab", cat:"تراثية", name:"المحراب", desc:"زمردي فاتح × ذهبي — طابع إسلامي هادئ", bg:"#07231A", fg:"#E9F2E4", accent:"#9FD4B4", font:"'Great Vibes',cursive"},
+  {id:"desert", cat:"تراثية", name:"رمال ذهبية", desc:"رملي × برونزي — دفء الصحراء العربية", bg:"#2E1F0C", fg:"#F7ECD4", accent:"#E8CF9E", font:"'Great Vibes',cursive"},
+  {id:"lavender", cat:"ناعمة", name:"لافندر", desc:"بنفسجي باستيل — حلم هادئ ورومانسي", bg:"#241539", fg:"#F0EAF9", accent:"#D9C8F2", font:"'Great Vibes',cursive"},
+  {id:"ocean", cat:"بسيطة", name:"نسيم البحر", desc:"أزرق سماوي — فرح نهاري على البحر", bg:"#082A3A", fg:"#E6F3F8", accent:"#A9D6E8", font:"'Great Vibes',cursive"},
+  {id:"peach", cat:"ناعمة", name:"خوخي دافئ", desc:"خوخي × مرجاني — بهجة دافئة ومشرقة", bg:"#3A1E0E", fg:"#FCEBDD", accent:"#F6C39A", font:"'Great Vibes',cursive"},
+  {id:"mint", cat:"ناعمة", name:"نعناعي منعش", desc:"نعناعي × أخضر — انتعاش ربيعي نظيف", bg:"#0A2A1D", fg:"#E6F6EC", accent:"#A9E4C5", font:"'Great Vibes',cursive"},
+  {id:"pearl", cat:"بسيطة", name:"لؤلؤي فضي", desc:"أبيض لؤلؤي × فضي — أناقة عصرية هادئة", bg:"#1C2129", fg:"#EFF1F4", accent:"#D8DDE2", font:"'Great Vibes',cursive"}
 ];
 const $=s=>document.querySelector(s);
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000);}
@@ -162,8 +180,11 @@ function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&l
 
 /* ============ عرض القوالب ============ */
 let chosen="royal";
+let tplFilter="الكل";
 function renderTemplates(){
-  $("#tplGrid").innerHTML = TEMPLATES.map(t=>`
+  const list = TEMPLATES.filter(t=>tplFilter==="الكل"||t.cat===tplFilter);
+  $("#tplCount").textContent = `${TEMPLATES.length} تصميماً جاهزاً`;
+  $("#tplGrid").innerHTML = list.map(t=>`
   <article class="tpl card !p-3 ${t.id===chosen?"sel":""}" data-tpl="${t.id}">
     <div class="mini" style="background:${t.bg};color:${t.fg}">
       <div style="font-family:${t.font};font-size:2rem;color:${t.accent}">A &amp; S</div>
@@ -171,7 +192,7 @@ function renderTemplates(){
       <div class="text-xs opacity-75 mt-1">الجمعة • 18 ديسمبر 2026</div>
       <div class="mt-3 text-xs font-bold px-4 py-1.5 rounded-full" style="background:${t.accent};color:${t.id==="rose"||t.id==="ivory"?"#fff":"#10182B"}">افتح الدعوة</div>
     </div>
-    <h3 class="font-bold mt-3">${t.name}</h3>
+    <h3 class="font-bold mt-3">${t.name} <span class="text-[10px] align-middle bg-cream text-gold-dark font-bold px-2 py-0.5 rounded-full">${t.cat||""}</span></h3>
     <p class="text-xs text-ink/55 leading-5 mt-1">${t.desc}</p>
     <div class="flex gap-2 mt-3">
       <button class="btn-gold flex-1 !py-2 text-sm pick-btn" data-tpl="${t.id}">اختر هذا القالب</button>
@@ -188,6 +209,11 @@ function chooseTpl(id,scroll){
   if(scroll) document.querySelector("#create").scrollIntoView({behavior:"smooth"});
 }
 renderTemplates();
+document.querySelectorAll(".tpl-filter").forEach(b=>b.onclick=()=>{
+  tplFilter=b.dataset.cat;
+  document.querySelectorAll(".tpl-filter").forEach(x=>{ const on=x===b; x.className=(on?"btn-gold":"btn-outline")+" !py-1.5 !px-4 text-sm tpl-filter"; });
+  renderTemplates();
+});
 document.querySelectorAll('input[name="package"]').forEach(r=>r.addEventListener("change",()=>{
   document.querySelectorAll(".pkg-card").forEach(c=>{ const on=c.dataset.pkg===r.value&&r.checked; c.style.borderColor=on?"#C9A24B":"rgba(201,162,75,.4)"; c.style.background=on?"#FBF3DF":""; });
 }));
@@ -274,7 +300,85 @@ $("#manageForm").addEventListener("submit", async e=>{
     <p class="text-sm mt-4">🔗 لينك دعوتك: <a class="text-gold-dark font-bold break-all" target="_blank" href="${inviteUrl(code)}">${inviteUrl(code)}</a></p>
     ${(data.rsvps&&data.rsvps.length)?`<h4 class="font-bold mt-5 mb-2">أحدث الردود</h4>`+data.rsvps.slice(0,30).map(r=>`<div class="flex justify-between bg-ivory border border-gold/25 rounded-xl px-4 py-2.5 text-sm mb-2"><span><b>${esc(r.name)}</b> <span class="text-ink/50">${esc(r.phone||"")}</span></span><span>${r.attending==="yes"?"✅ حاضر":r.attending==="no"?"❌ يعتذر":"ربما"}${+r.guests?` +${r.guests}`:""}</span></div>`).join(""):`<p class="text-sm text-ink/55 mt-4">لا توجد ردود حضور بعد — شارك اللينك مع معازيمك.</p>`}`;
   $("#manageResult").classList.remove("hidden");
+  renderGuestTools(code, data.invitation||{});
 });
+
+/* ============ مولّد روابط الضيوف + واتساب ============ */
+function guestCodeFor(name, code){
+  const src = String(name||code||"guest");
+  return "G-"+Math.abs([...src].reduce((a,c)=>((a<<5)-a+c.charCodeAt(0))|0,0)).toString().slice(0,4).padStart(3,"0");
+}
+function intlPhone(ph){
+  let d=String(ph||"").replace(/\D/g,"");
+  if(!d) return "";
+  if(d.startsWith("00")) d=d.slice(2);
+  if(d.length===11 && d.startsWith("01")) d="2"+d;
+  return d;
+}
+function renderGuestTools(code, inv){
+  const oldPanel=$("#guestTools"); if(oldPanel) oldPanel.remove();
+  const panel=document.createElement("div");
+  panel.id="guestTools";
+  panel.className="mt-8 border-t border-gold/30 pt-6";
+  const saved=JSON.parse(localStorage.getItem("marasem_guests_"+code)||"[]");
+  panel.innerHTML=`
+    <h4 class="font-ruqaa text-2xl text-center">روابط ضيوفك 📲</h4>
+    <p class="text-sm text-ink/60 text-center mt-1 leading-6">الصق أسماء ضيوفك (كل اسم في سطر) وهنولّد لكل ضيف لينك باسمه وكارت QR خاص بيه.<br>للإرسال المباشر لرقم الضيف اكتب: <b>الاسم,رقم الهاتف</b> في نفس السطر.</p>
+    <textarea id="gtNames" rows="6" class="mt-4" placeholder="مثال:\nأحمد سامي,01001234567\nمنى خالد\nعائلة الحاج محمود,01112223334">${esc(saved.map(g=>g.phone?g.name+","+g.phone:g.name).join("\n"))}</textarea>
+    <label class="block mt-3"><span>رسالة الواتساب (استخدم {الاسم} و {رابط} و {العريس} و {العروس})</span>
+    <textarea id="gtMsg" rows="3">أهلاً {الاسم} 💛
+بكل الحب ندعوكم لحضور حفل زفاف {العريس} & {العروس} 🎉
+دي دعوتكم الخاصة: {رابط}
+في انتظاركم 🌸</textarea></label>
+    <button type="button" class="btn-gold w-full mt-3" id="gtGen">ولّد روابط الضيوف ✨</button>
+    <div class="flex items-center justify-between mt-4 flex-wrap gap-2">
+      <span id="gtCount" class="text-sm font-bold text-gold-dark"></span>
+      <span class="flex gap-2">
+        <button type="button" class="btn-outline !py-1.5 text-sm" id="gtCopyAll">نسخ كل الروابط</button>
+        <button type="button" class="btn-outline !py-1.5 text-sm" id="gtCsv">تنزيل CSV</button>
+      </span>
+    </div>
+    <div id="gtList" class="mt-3 grid gap-2"></div>`;
+  $("#manageResult").appendChild(panel);
+
+  const sent=JSON.parse(localStorage.getItem("marasem_sent_"+code)||"{}");
+  function personalLink(g){
+    return inviteUrl(code)+"&to="+encodeURIComponent(g.name)+"&g="+guestCodeFor(g.name, code);
+  }
+  function draw(guests){
+    localStorage.setItem("marasem_guests_"+code, JSON.stringify(guests));
+    const list=$("#gtList");
+    list.innerHTML=guests.map((g,i)=>{
+      const link=personalLink(g);
+      const msg=$("#gtMsg").value.replaceAll("{الاسم}",g.name).replaceAll("{رابط}",link).replaceAll("{العريس}",inv.groomName||"العريس").replaceAll("{العروس}",inv.brideName||"العروس");
+      const intl=intlPhone(g.phone);
+      const wa=intl?`https://wa.me/${intl}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`;
+      const isSent=!!sent[guestCodeFor(g.name, code)];
+      return `<div class="flex items-center gap-2 bg-ivory border ${isSent?"border-green-500/50":"border-gold/25"} rounded-xl px-3 py-2.5 flex-wrap">
+        <label class="flex items-center gap-1.5 text-sm font-bold shrink-0"><input type="checkbox" class="!w-4 gt-sent" data-i="${i}" ${isSent?"checked":""}> تم</label>
+        <span class="font-bold text-sm">${esc(g.name)}</span>
+        <span class="text-[11px] text-ink/45 break-all flex-1 min-w-[140px]" dir="ltr">${esc(link)}</span>
+        <button type="button" class="btn-outline !py-1 !px-3 text-xs gt-copy" data-link="${esc(link)}">نسخ</button>
+        <a class="btn-gold !py-1 !px-3 text-xs gt-wa" data-i="${i}" target="_blank" rel="noopener" href="${wa}">واتساب 💬</a>
+      </div>`;
+    }).join("");
+    const sentCount=guests.filter(g=>sent[guestCodeFor(g.name, code)]).length;
+    $("#gtCount").textContent = guests.length? `${guests.length} ضيف — تم إرسال ${sentCount}` : "";
+    list.querySelectorAll(".gt-copy").forEach(b=>b.onclick=async()=>{ try{ await navigator.clipboard.writeText(b.dataset.link); toast("تم نسخ رابط الضيف ✅"); }catch{ prompt("انسخ الرابط:", b.dataset.link); } });
+    list.querySelectorAll(".gt-sent").forEach(cb=>cb.onchange=()=>{ const g=guests[+cb.dataset.i]; const gc=guestCodeFor(g.name, code); if(cb.checked) sent[gc]=1; else delete sent[gc]; localStorage.setItem("marasem_sent_"+code, JSON.stringify(sent)); draw(guests); });
+    list.querySelectorAll(".gt-wa").forEach(a=>a.onclick=()=>{ const g=guests[+a.dataset.i]; sent[guestCodeFor(g.name, code)]=1; localStorage.setItem("marasem_sent_"+code, JSON.stringify(sent)); setTimeout(()=>draw(guests), 600); });
+    panel._guests=guests;
+  }
+  $("#gtGen").onclick=()=>{
+    const lines=$("#gtNames").value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+    const guests=lines.map(line=>{ const parts=line.split(/[,،]/); return { name:(parts[0]||"").trim(), phone:(parts[1]||"").trim() }; }).filter(g=>g.name);
+    if(!guests.length){ toast("الصق أسماء الضيوف الأول"); return; }
+    draw(guests); toast(`تم توليد ${guests.length} رابط ضيف 🎉`);
+  };
+  $("#gtCopyAll").onclick=async()=>{ const gs=panel._guests||saved; if(!gs.length) return; const txt=gs.map(g=>`${g.name}: ${personalLink(g)}`).join("\n"); try{ await navigator.clipboard.writeText(txt); toast("تم نسخ كل الروابط ✅"); }catch{ prompt("انسخ الروابط:", txt); } };
+  $("#gtCsv").onclick=()=>{ const gs=panel._guests||saved; if(!gs.length) return; const csv="\ufeffname,phone,guest_code,link\n"+gs.map(g=>[g.name,g.phone||"",guestCodeFor(g.name, code),personalLink(g)].map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n"); const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download=`guests-${code}.csv`; a.click(); URL.revokeObjectURL(a.href); };
+  if(saved.length) draw(saved);
+}
 </script>
 <script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
