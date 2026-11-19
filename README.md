@@ -25,7 +25,7 @@
 2. شغّل `setupPlatform()` مرة واحدة ووافق على الأذونات (بينشئ التبويبات الثلاثة)
 3. Deploy ← Web app ← Execute as: **Me** + Who has access: **Anyone** ← انسخ الرابط
 4. Share للشيت: **Anyone with the link — Viewer** (ضروري لقراءة GViz الاحتياطية)
-5. في `index.html` و `invite.html` ضع رابط الـ Web App مكان
+5. في `index.html` و  `invite.html` ضع رابط الـ Web App مكان
    `PUT_YOUR_PLATFORM_APPS_SCRIPT_WEB_APP_URL_HERE`، ومعرّف الشيت (الجزء بين /d/ و /edit)
    مكان `PUT_YOUR_PLATFORM_SHEET_ID_HERE` في invite.html
 6. ارفع ملفات الموقع (بدون مجلد apps-script) على مستودع GitHub مربوط بـ Vercel
