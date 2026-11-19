@@ -214,7 +214,17 @@ const THEMES = {
   royal:{bg:"#FBF7EF",surface:"#ffffff",ink:"#0F1F1C",accent:"#C9A24B",accent2:"#E7CE8C",accentDark:"#9A7B2D",dark:"#0F1F1C",darkFg:"#F5EEDD",soft:"#F5EEDD"},
   rose:{bg:"#FDF3F0",surface:"#ffffff",ink:"#4A2A33",accent:"#C98A94",accent2:"#EFC3CB",accentDark:"#A05F6D",dark:"#6D3B47",darkFg:"#FDF0EC",soft:"#F9E4DE"},
   ivory:{bg:"#FAF8F2",surface:"#ffffff",ink:"#2E3B35",accent:"#8FA98F",accent2:"#C9D8C4",accentDark:"#5F7D63",dark:"#33544D",darkFg:"#F2F5EE",soft:"#EDF1E8"},
-  night:{bg:"#0E1526",surface:"#16203A",ink:"#EDEFF5",accent:"#C9A24B",accent2:"#E7CE8C",accentDark:"#E7CE8C",dark:"#080D1A",darkFg:"#EDEFF5",soft:"#1B2947"}
+  night:{bg:"#0E1526",surface:"#16203A",ink:"#EDEFF5",accent:"#C9A24B",accent2:"#E7CE8C",accentDark:"#E7CE8C",dark:"#080D1A",darkFg:"#EDEFF5",soft:"#1B2947"},
+  burgundy:{bg:"#FBF3F0",surface:"#ffffff",ink:"#3D0A14",accent:"#9D2C4A",accent2:"#E8B4B8",accentDark:"#7A1E33",dark:"#2A060D",darkFg:"#F7E8E4",soft:"#F6E3DC"},
+  noir:{bg:"#101010",surface:"#1A1A1A",ink:"#F2EDE4",accent:"#C9A24B",accent2:"#E7CE8C",accentDark:"#E7CE8C",dark:"#000000",darkFg:"#F5EEDD",soft:"#222222"},
+  andalus:{bg:"#F7F3EC",surface:"#ffffff",ink:"#173F3A",accent:"#B4552D",accent2:"#E4B78F",accentDark:"#8C3E1D",dark:"#0E2A30",darkFg:"#F3E9D7",soft:"#EFE6D8"},
+  mihrab:{bg:"#F4F7F2",surface:"#ffffff",ink:"#0C2E22",accent:"#C9A24B",accent2:"#9FD4B4",accentDark:"#14663C",dark:"#07231A",darkFg:"#E9F2E4",soft:"#E4EFE2"},
+  desert:{bg:"#FAF4E8",surface:"#ffffff",ink:"#4A3418",accent:"#B07E2B",accent2:"#E8CF9E",accentDark:"#8A5F1B",dark:"#2E1F0C",darkFg:"#F7ECD4",soft:"#F1E4C8"},
+  lavender:{bg:"#F6F2FA",surface:"#ffffff",ink:"#35224D",accent:"#8B6CC1",accent2:"#D9C8F2",accentDark:"#64459E",dark:"#241539",darkFg:"#F0EAF9",soft:"#EBE2F6"},
+  ocean:{bg:"#EFF7FA",surface:"#ffffff",ink:"#0E3442",accent:"#2E7FA3",accent2:"#A9D6E8",accentDark:"#1D5D7A",dark:"#082A3A",darkFg:"#E6F3F8",soft:"#DFEEF5"},
+  peach:{bg:"#FDF1E7",surface:"#ffffff",ink:"#54301C",accent:"#E07840",accent2:"#F6C39A",accentDark:"#B95524",dark:"#3A1E0E",darkFg:"#FCEBDD",soft:"#F9E3D0"},
+  mint:{bg:"#EFFAF4",surface:"#ffffff",ink:"#123B2A",accent:"#2FA36B",accent2:"#A9E4C5",accentDark:"#1E7A4C",dark:"#0A2A1D",darkFg:"#E6F6EC",soft:"#DFF2E6"},
+  pearl:{bg:"#FAFAF8",surface:"#ffffff",ink:"#2B2F36",accent:"#9AA3AD",accent2:"#D8DDE2",accentDark:"#6E7885",dark:"#1C2129",darkFg:"#EFF1F4",soft:"#ECEEF0"}
 };
 const DEMO_GALLERY = [
   "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80",
@@ -246,9 +256,16 @@ function latin(n){ const m=String(n||"").trim(); return m; }
 function initials(g,b){ return `${(g||"A")[0]} & ${(b||"S")[0]}`; }
 
 /* ---------- مصادر البيانات ---------- */
+function mapRow_(row){
+  if(!row) return row;
+  if(row.GroomName===undefined && row.groomName!==undefined) return row;
+  return { template:row.Template||"royal", groomName:row.GroomName||"", brideName:row.BrideName||"", groomLatin:row.GroomLatin||"", brideLatin:row.BrideLatin||"",
+    weddingDate:row.WeddingDate||"", weddingTime:row.WeddingTime||"", venueName:row.VenueName||"", venueAddress:row.VenueAddress||"", mapsUrl:row.MapsUrl||"", mapsEmbed:row.MapsEmbed||"",
+    heroImage:row.HeroImage||"", galleryUrls:row.GalleryUrls||"", story:row.Story||"", musicUrl:row.MusicUrl||"", package:row.Package||"" };
+}
 async function fetchFromScript(code){
   const r=await fetch(PLATFORM.APPS_SCRIPT_URL+"?action=get&code="+encodeURIComponent(code));
-  const j=await r.json(); if(!j.ok) throw new Error("not found"); return j.invitation;
+  const j=await r.json(); if(!j.ok) throw new Error("not found"); return mapRow_(j.invitation);
 }
 async function gviz(tab){
   const url=`https://docs.google.com/spreadsheets/d/${PLATFORM.SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(tab)}`;
@@ -261,9 +278,7 @@ async function fetchFromSheet(code){
   const rows=await gviz("Invitations");
   const row=rows.find(r=>String(r.Code||"").toUpperCase()===code && String(r.Status||"active")!=="deleted");
   if(!row) throw new Error("not found");
-  return { template:row.Template||"royal", groomName:row.GroomName, brideName:row.BrideName, groomLatin:row.GroomLatin||"", brideLatin:row.BrideLatin||"",
-    weddingDate:row.WeddingDate, weddingTime:row.WeddingTime, venueName:row.VenueName, venueAddress:row.VenueAddress, mapsUrl:row.MapsUrl, mapsEmbed:row.MapsEmbed,
-    heroImage:row.HeroImage, galleryUrls:row.GalleryUrls, story:row.Story, musicUrl:row.MusicUrl||"", package:row.Package||"" };
+  return mapRow_(row);
 }
 function fetchLocal(code){ const all=JSON.parse(localStorage.getItem("marasem_invitations")||"{}"); const inv=all[code]; if(!inv) throw new Error("not local"); return inv; }
 
@@ -296,7 +311,7 @@ function renderGuestbook(){
 function applyTheme(id){
   const t=THEMES[id]||THEMES.royal; const r=document.documentElement.style;
   Object.entries({bg:t.bg,surface:t.surface,ink:t.ink,accent:t.accent,accent2:t.accent2,accentDark:t.accentDark,dark:t.dark,darkFg:t.darkFg,soft:t.soft}).forEach(([k,v])=>r.setProperty("--"+({accentDark:"accentDark"}[k]||k),v));
-  r.setProperty("--muted", t.dark==="#0E1526"||THEMES[id]&&id==="night" ? "rgba(237,239,245,.66)" : "rgba(30,35,30,.62)");
+  r.setProperty("--muted", ["night","noir"].includes(id) ? "rgba(237,239,245,.66)" : "rgba(30,35,30,.62)");
   document.querySelector('meta[name="theme-color"]').content=t.dark;
 }
 function fmtDate(iso){ const d=new Date(iso); if(isNaN(d)) return iso||"—"; return new Intl.DateTimeFormat("ar-EG",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(d); }
