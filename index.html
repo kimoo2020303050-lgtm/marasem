@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>مراسم | MARASEM — دعوة زفاف فاخرة</title>
+<meta name="description" content="مراسم | MARASEM — دعوات رقمية فاخرة تليق بمناسباتكم. دعوة زفاف رقمية تفاعلية فاخرة - عدّاد تنازلي، موقع القاعة، معرض صور، تأكيد حضور ودفتر تهاني">
+<meta name="theme-color" content="#0f1f1c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { ivory:'#FBF7EF', cream:'#F5EEDD', gold:{DEFAULT:'#C9A24B', light:'#E7CE8C', dark:'#9A7B2D'}, ink:'#0F1F1C', sage:'#33544D' },
+  fontFamily: { amiri:['Amiri','serif'], ruqaa:['"Aref Ruqaa"','serif'], body:['Tajawal','sans-serif'], vibes:['"Great Vibes"','cursive'] }
+}}};
+</script>
+<style>
+  *{-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{background:#FBF7EF;color:#0F1F1C;font-family:Tajawal,sans-serif;overflow-x:hidden}
+  .gold-text{background:linear-gradient(120deg,#9A7B2D,#E7CE8C 45%,#C9A24B 70%,#9A7B2D);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .gold-border{border:1px solid rgba(201,162,75,.45)}
+  .card{background:#fff;border:1px solid rgba(201,162,75,.28);border-radius:1.5rem;box-shadow:0 18px 45px rgba(15,31,28,.08)}
+  .btn-gold{background:linear-gradient(120deg,#9A7B2D,#C9A24B,#E7CE8C);color:#0F1F1C;font-weight:800;border-radius:999px;padding:.9rem 1.6rem;box-shadow:0 10px 25px rgba(201,162,75,.35);transition:.25s}
+  .btn-gold:active{transform:scale(.97)}
+  .btn-outline{border:1px solid #C9A24B;color:#7c611f;font-weight:700;border-radius:999px;padding:.85rem 1.5rem;background:rgba(255,255,255,.7)}
+  .ornament{display:flex;align-items:center;gap:.75rem;justify-content:center;color:#C9A24B}
+  .ornament::before,.ornament::after{content:"";height:1px;width:64px;background:linear-gradient(90deg,transparent,#C9A24B,transparent)}
+  .count-box{min-width:70px;background:#0F1F1C;color:#F5EEDD;border-radius:1.1rem;padding:.85rem .4rem;text-align:center;box-shadow:0 14px 30px rgba(15,31,28,.22)}
+  .count-box b{display:block;font-size:1.65rem;line-height:1;color:#E7CE8C;font-family:Amiri,serif}
+  .count-box span{font-size:.72rem;opacity:.85}
+  .gallery-img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .gallery-item:hover .gallery-img{transform:scale(1.06)}
+  .fade-up{opacity:0;transform:translateY(24px);transition:all .8s cubic-bezier(.2,.7,.2,1)}
+  .fade-up.in{opacity:1;transform:none}
+  #envelope{transition:opacity .7s, visibility .7s}
+  #envelope.opened{opacity:0;visibility:hidden;pointer-events:none}
+  .petal{position:fixed;top:-40px;pointer-events:none;z-index:5;opacity:.55;animation:fall linear infinite}
+  @keyframes fall{to{transform:translateY(110vh) rotate(320deg)}}
+  input,select,textarea{width:100%;background:#FBF7EF;border:1px solid rgba(201,162,75,.4);border-radius:.9rem;padding:.85rem 1rem;outline:none}
+  input:focus,select:focus,textarea:focus{border-color:#C9A24B;box-shadow:0 0 0 3px rgba(201,162,75,.18)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);z-index:90;transition:.4s}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  #lightbox{transition:opacity .3s}
+  .skeleton{background:linear-gradient(100deg,#efe6d2 40%,#fbf7ef 50%,#efe6d2 60%);background-size:200% 100%;animation:sh 1.4s infinite}
+  @keyframes sh{to{background-position:-200% 0}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="font-body">
+
+<!-- ===== Envelope / Splash ===== -->
+<div id="envelope" class="fixed inset-0 z-[80] flex items-center justify-center bg-[#0F1F1C] px-5">
+  <div class="text-center max-w-sm w-full">
+    <p class="text-gold-light tracking-[.35em] text-xs font-bold mb-4">MARASEM • مراسم</p>
+    <div class="font-vibes text-6xl gold-text mb-3" id="envMonogram">A &amp; S</div>
+    <div class="ornament mb-5">✦ ✦ ✦</div>
+    <p class="text-cream/80 mb-1">دعوة خاصة إلى</p>
+    <h2 id="envGuest" class="font-ruqaa text-3xl text-ivory mb-6">ضيفنا العزيز</h2>
+    <p class="text-cream/60 text-sm leading-7 mb-8">بكل الحب، ندعوكم لمشاركتنا أجمل لحظات العمر<br>اضغط لفتح الدعوة</p>
+    <button id="openBtn" class="btn-gold w-full text-lg">افتح الدعوة 💌</button>
+  </div>
+</div>
+
+<!-- ===== Header ===== -->
+<header class="fixed top-0 inset-x-0 z-40 bg-ivory/85 backdrop-blur-md border-b border-gold/25">
+  <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+    <div class="font-vibes text-3xl gold-text leading-none pt-1" id="navMonogram">A &amp; S</div>
+    <nav class="hidden md:flex gap-6 text-sm font-bold text-sage">
+      <a href="#countdown">العدّاد</a><a href="#gallery">المعرض</a><a href="#location">الموقع</a><a href="#guestbook">التهاني</a>
+    </nav>
+    <button id="installBtn" class="hidden btn-outline !py-2 !px-4 text-sm">تثبيت التطبيق</button>
+    <a href="#rsvp" class="btn-gold !py-2 !px-4 text-sm">تأكيد الحضور</a>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="relative pt-14">
+  <div class="relative h-[78svh] min-h-[520px] overflow-hidden">
+    <img id="heroImage" class="w-full h-full object-cover" alt="العروسان">
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0F1F1C] via-[#0F1F1C]/25 to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 pb-10 text-center px-5">
+      <p class="text-cream/90 tracking-wide mb-2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+      <p class="text-gold-light text-sm mb-3">﴿وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً﴾</p>
+      <h1 class="font-ruqaa text-4xl md:text-6xl text-ivory leading-relaxed"><span data-cfg="groomName">أحمد</span> <span class="gold-text">&amp;</span> <span data-cfg="brideName">سارة</span></h1>
+      <p class="font-vibes text-4xl gold-text mt-1" id="heroVibes">Ahmed &amp; Sara</p>
+      <p class="text-cream mt-3 font-bold" id="heroDateText">الجمعة • 20 نوفمبر 2026 • 7 مساءً</p>
+      <p class="text-cream/75 text-sm mt-1" id="heroVenueText">قاعة الاحتفالات الكبرى — القاهرة</p>
+      <div class="mt-6 flex gap-3 justify-center flex-wrap">
+        <a href="#rsvp" class="btn-gold">أكّد حضورك</a>
+        <button id="shareBtn" class="btn-outline !bg-white/10 !text-cream !border-cream/50">مشاركة الدعوة</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="max-w-5xl mx-auto px-4 pb-24">
+
+  <!-- Personal greeting -->
+  <section class="card -mt-8 relative z-10 p-6 text-center fade-up">
+    <div class="ornament mb-2">✦</div>
+    <p class="text-sage">أهلاً وسهلاً</p>
+    <h2 id="personalGuest" class="font-ruqaa text-2xl mt-1">ضيفنا العزيز</h2>
+    <p class="text-sm text-ink/65 leading-7 mt-2">يسعدنا ويشرفنا حضوركم ومشاركتنا فرحتنا. وجودكم هو أجمل هدية، ودعواتكم الصادقة هي أغلى ما نتمنى.</p>
+    <p id="guestCodeLine" class="text-xs text-gold-dark font-bold mt-3"></p>
+  </section>
+
+  <!-- Countdown -->
+  <section id="countdown" class="py-12 text-center fade-up">
+    <div class="ornament mb-2">✦ ✦ ✦</div>
+    <h2 class="font-ruqaa text-3xl mb-2">المتبقي على ليلة العمر</h2>
+    <p class="text-ink/60 text-sm mb-6" id="countdownHint">نعدّ اللحظات شوقاً للقائكم</p>
+    <div class="flex justify-center gap-2.5 flex-wrap" dir="ltr">
+      <div class="count-box"><b id="cd-d">--</b><span>يوم</span></div>
+      <div class="count-box"><b id="cd-h">--</b><span>ساعة</span></div>
+      <div class="count-box"><b id="cd-m">--</b><span>دقيقة</span></div>
+      <div class="count-box"><b id="cd-s">--</b><span>ثانية</span></div>
+    </div>
+    <button id="addCalBtn" class="btn-outline mt-6 text-sm">أضف الموعد إلى تقويمك 📅</button>
+  </section>
+
+  <!-- Couple -->
+  <section class="grid md:grid-cols-2 gap-5 fade-up">
+    <article class="card overflow-hidden text-center">
+      <img id="groomImage" class="w-full h-72 object-cover" alt="العريس">
+      <div class="p-5"><p class="font-vibes text-3xl gold-text">The Groom</p><h3 class="font-ruqaa text-2xl mt-1" data-cfg="groomFull">أحمد محمد</h3><p class="text-sm text-ink/60 mt-2 leading-7" data-cfg="groomBio"></p></div>
+    </article>
+    <article class="card overflow-hidden text-center">
+      <img id="brideImage" class="w-full h-72 object-cover" alt="العروس">
+      <div class="p-5"><p class="font-vibes text-3xl gold-text">The Bride</p><h3 class="font-ruqaa text-2xl mt-1" data-cfg="brideFull">سارة خالد</h3><p class="text-sm text-ink/60 mt-2 leading-7" data-cfg="brideBio"></p></div>
+    </article>
+  </section>
+
+  <!-- Story + Details -->
+  <section class="card p-6 md:p-8 mt-6 text-center fade-up">
+    <div class="ornament mb-2">❦</div>
+    <h2 class="font-ruqaa text-3xl mb-3">حكايتنا</h2>
+    <p class="leading-8 text-ink/70 max-w-2xl mx-auto" data-cfg="storyText"></p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-7 text-sm">
+      <div class="bg-cream rounded-2xl p-4"><div class="text-2xl mb-1">📅</div><b>التاريخ</b><p class="text-ink/60 mt-1" id="detailDate">—</p></div>
+      <div class="bg-cream rounded-2xl p-4"><div class="text-2xl mb-1">🕖</div><b>الاستقبال</b><p class="text-ink/60 mt-1" id="detailTime">—</p></div>
+      <div class="bg-cream rounded-2xl p-4"><div class="text-2xl mb-1">🏛️</div><b>القاعة</b><p class="text-ink/60 mt-1" id="detailVenue">—</p></div>
+      <div class="bg-cream rounded-2xl p-4"><div class="text-2xl mb-1">👔</div><b>الزي</b><p class="text-ink/60 mt-1" data-cfg="dressCode">رسمي أنيق</p></div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" class="py-12 fade-up">
+    <div class="text-center mb-6"><div class="ornament mb-2">✦ ✦ ✦</div><h2 class="font-ruqaa text-3xl">معرض لحظاتنا</h2><p class="text-ink/60 text-sm mt-1">اضغط على أي صورة لعرضها بحجم أكبر</p></div>
+    <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      <div class="skeleton rounded-3xl h-52"></div><div class="skeleton rounded-3xl h-52"></div><div class="skeleton rounded-3xl h-52 hidden md:block"></div>
+    </div>
+  </section>
+
+  <!-- Location -->
+  <section id="location" class="card overflow-hidden fade-up">
+    <div class="p-6 text-center">
+      <div class="ornament mb-2">✦</div><h2 class="font-ruqaa text-3xl">موقع القاعة</h2>
+      <p class="font-bold mt-2" id="venueName2">—</p><p class="text-sm text-ink/60 mt-1" id="venueAddress">—</p>
+    </div>
+    <iframe id="mapFrame" title="خريطة القاعة" class="w-full h-72 border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="p-5 text-center"><a id="mapsBtn" target="_blank" rel="noopener" class="btn-gold inline-block">افتح في خرائط جوجل 🗺️</a></div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp" class="card p-6 md:p-8 mt-8 fade-up">
+    <div class="text-center mb-6"><div class="ornament mb-2">✦ ✦ ✦</div><h2 class="font-ruqaa text-3xl">تأكيد الحضور RSVP</h2><p class="text-sm text-ink/60 mt-1">فضلاً أكّد حضورك قبل <span data-cfg="rsvpDeadlineText">أسبوع من الحفل</span> حتى نجهّز لك مكانك</p></div>
+    <form id="rsvpForm" class="grid md:grid-cols-2 gap-4">
+      <label class="block"><span class="text-sm font-bold">الاسم بالكامل *</span><input required name="name" id="rsvpName" placeholder="اسم الضيف"></label>
+      <label class="block"><span class="text-sm font-bold">رقم الهاتف</span><input name="phone" type="tel" inputmode="tel" placeholder="01xxxxxxxxx"></label>
+      <label class="block"><span class="text-sm font-bold">هل ستحضر؟ *</span>
+        <select required name="attending"><option value="yes">نعم، بكل سرور 🎉</option><option value="no">أعتذر عن الحضور</option><option value="maybe">ربما / غير متأكد بعد</option></select></label>
+      <label class="block"><span class="text-sm font-bold">عدد المرافقين</span>
+        <select name="guests"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+      <label class="block md:col-span-2"><span class="text-sm font-bold">ملاحظات / أغنية تطلبها / حساسية طعام</span><textarea name="notes" rows="3" placeholder="اكتب أي تفاصيل تساعدنا..."></textarea></label>
+      <input type="hidden" name="guestCode" id="rsvpCode">
+      <button class="btn-gold md:col-span-2 w-full" id="rsvpSubmit">إرسال تأكيد الحضور</button>
+      <p id="rsvpStatus" class="md:col-span-2 text-center text-sm font-bold"></p>
+    </form>
+  </section>
+
+  <!-- Guestbook -->
+  <section id="guestbook" class="py-12 fade-up">
+    <div class="text-center mb-6"><div class="ornament mb-2">❦</div><h2 class="font-ruqaa text-3xl">دفتر التهاني</h2><p class="text-ink/60 text-sm mt-1">كلماتكم ستبقى ذكرى جميلة في بداية حياتنا</p></div>
+    <form id="gbForm" class="card p-5 grid gap-3 mb-5">
+      <input required name="name" id="gbName" placeholder="اسمك الكريم">
+      <textarea required name="message" rows="3" placeholder="اكتب تهنئتك للعروسين..."></textarea>
+      <button class="btn-gold w-full" id="gbSubmit">انشر التهنئة ✍️</button>
+      <p id="gbStatus" class="text-center text-sm font-bold"></p>
+    </form>
+    <div id="gbList" class="grid md:grid-cols-2 gap-3"></div>
+  </section>
+
+  <!-- Personal QR Card -->
+  <section class="card p-6 md:p-8 text-center fade-up">
+    <div class="ornament mb-2">✦ ✦ ✦</div>
+    <h2 class="font-ruqaa text-3xl mb-2">بطاقة دعوتك الخاصة</h2>
+    <p class="text-sm text-ink/60 leading-7 max-w-xl mx-auto">هذا الكارت مخصص لك وحدك. احتفظ به على هاتفك، وأظهر رمز QR عند بوابة القاعة لتسجيل دخول سريع.</p>
+    <div class="mx-auto mt-6 max-w-xs bg-ink text-cream rounded-[1.7rem] p-6 shadow-2xl">
+      <div class="font-vibes text-4xl gold-text" id="qrMonogram">A &amp; S</div>
+      <p class="font-ruqaa text-xl mt-2" id="qrGuest">ضيفنا العزيز</p>
+      <p class="text-cream/60 text-xs mt-1" id="qrDate">—</p>
+      <div id="qrBox" class="bg-white rounded-2xl p-3 w-[184px] h-[184px] mx-auto mt-4 flex items-center justify-center"></div>
+      <p class="text-gold-light font-bold tracking-widest mt-3" id="qrCodeText">GUEST-001</p>
+    </div>
+    <div class="flex gap-3 justify-center mt-6 flex-wrap">
+      <button id="downloadCardBtn" class="btn-gold">تحميل الكارت كصورة ⬇️</button>
+      <button id="copyLinkBtn" class="btn-outline">نسخ رابط دعوتي</button>
+    </div>
+    <canvas id="cardCanvas" width="900" height="1300" class="hidden"></canvas>
+  </section>
+
+  <footer class="text-center pt-14">
+    <div class="font-vibes text-5xl gold-text" id="footMonogram">A &amp; S</div>
+    <p class="font-ruqaa text-xl mt-2">في انتظاركم بكل حب</p>
+    <p class="text-xs text-ink/45 mt-3">دعوة رقمية فاخرة • حضوركم يشرفنا والدعاء يكفينا</p>
+    <p class="text-xs mt-4 text-gold-dark font-bold tracking-wide">Powered by <span class="font-ruqaa text-sm">مراسم</span> | MARASEM<br><span class="text-ink/45 font-normal">دعوات رقمية فاخرة تليق بمناسباتكم</span></p>
+  </footer>
+</main>
+
+<!-- Lightbox -->
+<div id="lightbox" class="fixed inset-0 z-[70] bg-black/92 hidden items-center justify-center p-4 opacity-0">
+  <button id="lbClose" class="absolute top-5 left-5 text-white text-3xl">✕</button>
+  <button id="lbPrev" class="absolute right-3 top-1/2 -translate-y-1/2 text-white text-4xl px-2">‹</button>
+  <img id="lbImg" class="max-h-[86svh] max-w-full rounded-2xl object-contain" alt="صورة مكبرة">
+  <button id="lbNext" class="absolute left-3 top-1/2 -translate-y-1/2 text-white text-4xl px-2">›</button>
+  <p id="lbCaption" class="absolute bottom-6 inset-x-0 text-center text-white/85 text-sm"></p>
+</div>
+
+<div id="toast" class="toast bg-ink text-cream px-5 py-3 rounded-full shadow-2xl text-sm font-bold"></div>
+
+<script>
+/* ============================================================
+   الإعدادات — عدّل القيمتين التاليتين فقط بعد إنشاء الشيت والنشر
+   ============================================================ */
+const CONFIG = {
+  SHEET_ID: "PUT_YOUR_GOOGLE_SHEET_ID_HERE",
+  APPS_SCRIPT_URL: "PUT_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE",
+  TABS: { config: "Config", gallery: "Gallery", guestbook: "Guestbook" }
+};
+
+/* بيانات تجريبية فاخرة تعمل فوراً قبل الربط، وتُستبدل تلقائياً ببيانات الشيت */
+const DEMO = {
+  config: {
+    groomName:"أحمد", brideName:"سارة", groomFull:"أحمد محمد الشريف", brideFull:"سارة خالد حسن",
+    groomBio:"مهندس برمجيات، عاشق للقهوة والسفر.", brideBio:"طبيبة أسنان، تحب الفن والتصوير.",
+    groomLatin:"Ahmed", brideLatin:"Sara",
+    weddingDate:"2026-11-20T19:00:00", weddingTime:"7:00 مساءً — الاستقبال من 6:30",
+    venueName:"قاعة الاحتفالات الكبرى", venueAddress:"كورنيش النيل، القاهرة",
+    mapsUrl:"https://www.google.com/maps/search/?api=1&query=Cairo+wedding+hall",
+    mapsEmbed:"https://www.google.com/maps?q=Cairo&output=embed",
+    heroImage:"https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80",
+    groomImage:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80",
+    brideImage:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80",
+    storyText:"تقابلنا صدفة، فصارت الصدفة أجمل قرار. بعد سنوات من الصداقة والحلم المشترك، قررنا أن نكتب معاً أول سطر في حكاية العمر — وأن تكونوا أنتم شهودها وأجمل فصولها.",
+    dressCode:"رسمي أنيق", rsvpDeadlineText:"13 نوفمبر 2026"
+  },
+  gallery: [
+    {title:"جلسة التصوير", image:"https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80"},
+    {title:"لحظة الخاتم", image:"https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1000&q=80"},
+    {title:"ضحكة من القلب", image:"https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1000&q=80"},
+    {title:"وعد العمر", image:"https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1000&q=80"},
+    {title:"أجمل يوم", image:"https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=80"},
+    {title:"بداية الحلم", image:"https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80"}
+  ],
+  guestbook: [
+    {name:"عائلة الشريف", message:"ألف مبروك يا أغلى الناس، ربنا يتمم لكم على خير ويسعد قلوبكم دائماً ❤️"},
+    {name:"منى خالد", message:"أجمل عروسين! في انتظار ليلة العمر بفارغ الصبر."}
+  ]
+};
+
+/* ---------- أدوات مساعدة ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const params = new URLSearchParams(location.search);
+const guestName = (params.get("to") || params.get("guest") || "").trim();
+const guestCode = (params.get("id") || params.get("code") || "").trim() || ("GUEST-" + Math.abs([...(guestName||"guest")].reduce((a,c)=>((a<<5)-a+c.charCodeAt(0))|0,0)).toString().slice(0,4).padStart(3,"0"));
+let DATA = structuredClone(DEMO);
+let countdownTimer = null, galleryIndex = 0;
+
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),3200); }
+function isConfigured(){ return CONFIG.SHEET_ID && !CONFIG.SHEET_ID.startsWith("PUT_"); }
+function scriptReady(){ return CONFIG.APPS_SCRIPT_URL && !CONFIG.APPS_SCRIPT_URL.startsWith("PUT_"); }
+
+/* ---------- جلب البيانات من Google Sheets عبر GViz ---------- */
+async function gviz(tab){
+  const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab)}`;
+  const res = await fetch(url); if(!res.ok) throw new Error("GViz "+res.status);
+  const text = await res.text();
+  const json = JSON.parse(text.substring(text.indexOf("{"), text.lastIndexOf("}")+1));
+  const cols = json.table.cols.map(c=> (c.label||"").trim());
+  return json.table.rows.map(r=>{
+    const obj={}; (r.c||[]).forEach((cell,i)=>{ obj[cols[i]||("c"+i)] = cell ? (cell.f ?? cell.v ?? "") : ""; }); return obj;
+  });
+}
+function rowsToConfig(rows){ const o={}; rows.forEach(r=>{ const k=(r.Key||r.key||"").trim(); if(k) o[k]=String(r.Value??r.value??"").trim(); }); return o; }
+
+async function loadData(){
+  if(!isConfigured()){ render(); return; }
+  try{
+    const [cfgRows, galRows, gbRows] = await Promise.allSettled([gviz(CONFIG.TABS.config), gviz(CONFIG.TABS.gallery), gviz(CONFIG.TABS.guestbook)]);
+    if(cfgRows.status==="fulfilled"){ const c=rowsToConfig(cfgRows.value); if(Object.keys(c).length) DATA.config={...DATA.config,...c}; }
+    if(galRows.status==="fulfilled"){ const g=galRows.value.filter(r=>String(r.Active??"TRUE").toUpperCase()!=="FALSE" && (r.ImageUrl||r.Image)).map(r=>({title:r.Title||"", image:r.ImageUrl||r.Image})).sort((a,b)=>(+a.SortOrder||0)-(+b.SortOrder||0)); if(g.length) DATA.gallery=g; }
+    if(gbRows.status==="fulfilled"){ const g=gbRows.value.filter(r=>String(r.Approved??"TRUE").toUpperCase()!=="FALSE" && r.Message).map(r=>({name:r.Name||"ضيف", message:r.Message})).reverse(); if(g.length) DATA.guestbook=g; }
+  }catch(e){ console.warn("تعذر تحميل الشيت، تم استخدام البيانات الاحتياطية", e); }
+  render();
+}
+
+/* ---------- العرض ---------- */
+function fmtDate(iso){
+  const d=new Date(iso); if(isNaN(d)) return iso;
+  return new Intl.DateTimeFormat("ar-EG",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(d);
+}
+function render(){
+  const c=DATA.config;
+  document.title = `دعوة زفاف ${c.groomName} & ${c.brideName}`;
+  $$("[data-cfg]").forEach(el=>{ const k=el.dataset.cfg; if(c[k]) el.textContent=c[k]; });
+  const mono = `${(c.groomLatin||c.groomName||"A")[0]} & ${(c.brideLatin||c.brideName||"S")[0]}`;
+  const monoFull = `${c.groomLatin||c.groomName} & ${c.brideLatin||c.brideName}`;
+  ["#envMonogram","#navMonogram","#qrMonogram","#footMonogram"].forEach(s=>{ const el=$(s); if(el) el.textContent = s==="#navMonogram" ? mono : monoFull; });
+  $("#heroVibes").textContent = monoFull;
+  $("#heroImage").src=c.heroImage; $("#groomImage").src=c.groomImage; $("#brideImage").src=c.brideImage;
+  $("#heroDateText").textContent = `${fmtDate(c.weddingDate)} • ${c.weddingTime||""}`;
+  $("#heroVenueText").textContent = `${c.venueName} — ${c.venueAddress}`;
+  $("#detailDate").textContent=fmtDate(c.weddingDate); $("#detailTime").textContent=c.weddingTime||"—"; $("#detailVenue").textContent=c.venueName||"—";
+  $("#venueName2").textContent=c.venueName||"—"; $("#venueAddress").textContent=c.venueAddress||"—";
+  $("#qrDate").textContent = `${fmtDate(c.weddingDate)} • ${c.venueName}`;
+  $("#mapFrame").src=c.mapsEmbed; $("#mapsBtn").href=c.mapsUrl;
+  const displayGuest = guestName || "ضيفنا العزيز";
+  $("#envGuest").textContent=displayGuest; $("#personalGuest").textContent=displayGuest; $("#qrGuest").textContent=displayGuest;
+  $("#qrCodeText").textContent=guestCode; $("#rsvpCode").value=guestCode;
+  if(guestName){ $("#guestCodeLine").textContent=`كود دعوتك الشخصي: ${guestCode}`; $("#rsvpName").value=guestName; $("#gbName").value=guestName; }
+  renderGallery(); renderGuestbook(); startCountdown(); buildQR();
+}
+function renderGallery(){
+  $("#galleryGrid").innerHTML = DATA.gallery.map((g,i)=>`
+    <button class="gallery-item relative rounded-3xl overflow-hidden h-52 md:h-64 text-right" data-i="${i}" aria-label="${escapeHtml(g.title||"صورة")}">
+      <img class="gallery-img" loading="lazy" src="${g.image}" alt="${escapeHtml(g.title||"")}">
+      <span class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/65 to-transparent text-white text-sm font-bold px-4 pb-3 pt-8">${escapeHtml(g.title||"")}</span>
+    </button>`).join("");
+  $$(".gallery-item").forEach(b=>b.addEventListener("click",()=>openLightbox(+b.dataset.i)));
+}
+function renderGuestbook(){
+  $("#gbList").innerHTML = DATA.guestbook.length ? DATA.guestbook.map(g=>`
+    <article class="card p-5"><div class="text-gold text-lg">❝</div><p class="leading-7 text-ink/75 mt-1">${escapeHtml(g.message)}</p><p class="font-bold text-sm mt-3 text-sage">— ${escapeHtml(g.name)}</p></article>`).join("")
+    : `<p class="text-center text-ink/50 md:col-span-2">كن أول من يترك تهنئة للعروسين 💛</p>`;
+}
+function escapeHtml(s){ return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+
+/* ---------- العدّاد التنازلي ---------- */
+function startCountdown(){
+  clearInterval(countdownTimer);
+  const target=new Date(DATA.config.weddingDate).getTime();
+  const tick=()=>{
+    const diff=target-Date.now();
+    if(isNaN(target)){ $("#countdownHint").textContent="سيتم إعلان الموعد قريباً"; return; }
+    if(diff<=0){ ["cd-d","cd-h","cd-m","cd-s"].forEach(id=>$("#"+id).textContent="00"); $("#countdownHint").textContent="🎉 اليوم هو يوم الفرح! في انتظاركم"; clearInterval(countdownTimer); return; }
+    const d=Math.floor(diff/864e5), h=Math.floor(diff/36e5)%24, m=Math.floor(diff/6e4)%60, s=Math.floor(diff/1e3)%60;
+    $("#cd-d").textContent=String(d).padStart(2,"0"); $("#cd-h").textContent=String(h).padStart(2,"0");
+    $("#cd-m").textContent=String(m).padStart(2,"0"); $("#cd-s").textContent=String(s).padStart(2,"0");
+  };
+  tick(); countdownTimer=setInterval(tick,1000);
+}
+
+/* ---------- Lightbox ---------- */
+function openLightbox(i){ galleryIndex=i; updateLb(); const lb=$("#lightbox"); lb.classList.remove("hidden"); lb.classList.add("flex"); requestAnimationFrame(()=>lb.style.opacity=1); }
+function closeLightbox(){ const lb=$("#lightbox"); lb.style.opacity=0; setTimeout(()=>{lb.classList.add("hidden"); lb.classList.remove("flex");},280); }
+function updateLb(){ const g=DATA.gallery[galleryIndex]; if(!g) return; $("#lbImg").src=g.image; $("#lbCaption").textContent=g.title||""; }
+$("#lbClose").onclick=closeLightbox;
+$("#lbNext").onclick=()=>{ galleryIndex=(galleryIndex+1)%DATA.gallery.length; updateLb(); };
+$("#lbPrev").onclick=()=>{ galleryIndex=(galleryIndex-1+DATA.gallery.length)%DATA.gallery.length; updateLb(); };
+$("#lightbox").addEventListener("click",e=>{ if(e.target.id==="lightbox") closeLightbox(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeLightbox(); });
+
+/* ---------- QR وبطاقة الدعوة ---------- */
+function invitationUrl(){ const u=new URL(location.href); if(guestName) u.searchParams.set("to",guestName); u.searchParams.set("id",guestCode); return u.toString(); }
+function buildQR(){
+  const box=$("#qrBox"); box.innerHTML="";
+  if(window.QRCode){ new QRCode(box,{text:invitationUrl(),width:160,height:160,colorDark:"#0F1F1C",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }
+  else box.innerHTML=`<img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(invitationUrl())}">`;
+}
+$("#copyLinkBtn").onclick=async()=>{ try{ await navigator.clipboard.writeText(invitationUrl()); toast("تم نسخ رابط دعوتك ✅"); }catch{ prompt("انسخ رابط دعوتك:", invitationUrl()); } };
+$("#downloadCardBtn").onclick=()=>{
+  const cv=$("#cardCanvas"), ctx=cv.getContext("2d"), c=DATA.config;
+  ctx.fillStyle="#0F1F1C"; ctx.fillRect(0,0,900,1300);
+  ctx.strokeStyle="#C9A24B"; ctx.lineWidth=4; ctx.strokeRect(36,36,828,1228); ctx.lineWidth=1; ctx.strokeRect(54,54,792,1192);
+  ctx.fillStyle="#E7CE8C"; ctx.textAlign="center"; ctx.font="90px 'Great Vibes', cursive";
+  ctx.fillText(`${c.groomLatin||c.groomName} & ${c.brideLatin||c.brideName}`,450,210);
+  ctx.fillStyle="#FBF7EF"; ctx.font="bold 54px Amiri, serif"; ctx.fillText(guestName||"ضيفنا العزيز",450,330);
+  ctx.font="34px Tajawal, sans-serif"; ctx.fillStyle="#F5EEDD"; ctx.fillText(fmtDate(c.weddingDate),450,400); ctx.fillText(c.venueName||"",450,455);
+  const qrImg=$("#qrBox img, #qrBox canvas");
+  const finish=()=>{ ctx.fillStyle="#E7CE8C"; ctx.font="bold 40px Tajawal"; ctx.fillText(guestCode,450,1060); ctx.font="28px Tajawal"; ctx.fillStyle="#FBF7EF"; ctx.fillText("أظهر هذا الرمز عند بوابة القاعة",450,1120);
+    const a=document.createElement("a"); a.download=`wedding-card-${guestCode}.png`; a.href=cv.toDataURL("image/png"); a.click(); toast("تم تحميل بطاقتك ✅"); };
+  if(qrImg){ const img=new Image(); img.crossOrigin="anonymous"; img.onload=()=>{ ctx.fillStyle="#fff"; roundRect(ctx,290,540,320,320,24); ctx.fill(); ctx.drawImage(img,310,560,280,280); finish(); }; img.onerror=finish; img.src=qrImg.tagName==="CANVAS"?qrImg.toDataURL():qrImg.src; } else finish();
+};
+function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+/* ---------- الإرسال إلى Apps Script (RSVP + Guestbook) ---------- */
+async function postToScript(payload){
+  if(!scriptReady()){ /* وضع تجريبي: حفظ محلي */
+    const key="wedding_local_"+payload.type; const arr=JSON.parse(localStorage.getItem(key)||"[]"); arr.push({...payload,at:new Date().toISOString()}); localStorage.setItem(key,JSON.stringify(arr)); return {ok:true, local:true};
+  }
+  await fetch(CONFIG.APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+  return {ok:true};
+}
+$("#rsvpForm").addEventListener("submit", async e=>{
+  e.preventDefault(); const btn=$("#rsvpSubmit"); btn.disabled=true; btn.textContent="جارٍ الإرسال...";
+  const fd=new FormData(e.target); const payload={type:"rsvp",name:fd.get("name"),phone:fd.get("phone"),attending:fd.get("attending"),guests:fd.get("guests"),notes:fd.get("notes"),guestCode,pageUrl:location.href};
+  try{ const r=await postToScript(payload); $("#rsvpStatus").textContent = r.local ? "✅ تم حفظ تأكيدك (وضع تجريبي — اربط Apps Script ليصل للإدارة)" : "✅ شكراً! وصل تأكيد حضورك للعروسين"; $("#rsvpStatus").style.color="#33544D"; toast("تم إرسال تأكيد الحضور ✅"); }
+  catch(err){ $("#rsvpStatus").textContent="حدث خطأ أثناء الإرسال، حاول مرة أخرى"; $("#rsvpStatus").style.color="#b91c1c"; }
+  btn.disabled=false; btn.textContent="إرسال تأكيد الحضور";
+});
+$("#gbForm").addEventListener("submit", async e=>{
+  e.preventDefault(); const btn=$("#gbSubmit"); btn.disabled=true; btn.textContent="جارٍ النشر...";
+  const fd=new FormData(e.target); const item={name:fd.get("name"),message:fd.get("message")};
+  try{ await postToScript({type:"guestbook",...item,guestCode});
+    DATA.guestbook.unshift(item); renderGuestbook(); e.target.reset(); if(guestName) $("#gbName").value=guestName;
+    $("#gbStatus").textContent="✅ شكراً! ظهرت تهنئتك في الدفتر"; $("#gbStatus").style.color="#33544D";
+  }catch{ $("#gbStatus").textContent="حدث خطأ، حاول مرة أخرى"; $("#gbStatus").style.color="#b91c1c"; }
+  btn.disabled=false; btn.textContent="انشر التهنئة ✍️";
+});
+
+/* ---------- تفاعلات عامة ---------- */
+$("#openBtn").onclick=()=>{ $("#envelope").classList.add("opened"); document.body.style.overflow=""; makePetals(); };
+document.body.style.overflow="hidden";
+function makePetals(){ if(matchMedia("(prefers-reduced-motion: reduce)").matches) return; const icons=["🌸","✨","💛"]; for(let i=0;i<14;i++){ const s=document.createElement("span"); s.className="petal"; s.textContent=icons[i%3]; s.style.left=Math.random()*100+"vw"; s.style.fontSize=(12+Math.random()*14)+"px"; s.style.animationDuration=(7+Math.random()*8)+"s"; s.style.animationDelay=(Math.random()*4)+"s"; document.body.appendChild(s); setTimeout(()=>s.remove(),18000); } }
+$("#shareBtn").onclick=async()=>{ const data={title:document.title,text:`مراسم | MARASEM — دعوة زفاف ${DATA.config.groomName} & ${DATA.config.brideName} — ${fmtDate(DATA.config.weddingDate)}`,url:invitationUrl()}; if(navigator.share){ try{await navigator.share(data);}catch{} } else { try{await navigator.clipboard.writeText(data.url); toast("تم نسخ رابط الدعوة ✅");}catch{} } };
+$("#addCalBtn").onclick=()=>{
+  const c=DATA.config, start=new Date(c.weddingDate); if(isNaN(start)) return toast("الموعد غير مكتمل في الإعدادات");
+  const end=new Date(start.getTime()+4*36e5); const f=d=>d.toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+  const ics=["BEGIN:VCALENDAR","VERSION:2.0","BEGIN:VEVENT",`DTSTART:${f(start)}`,`DTEND:${f(end)}`,`SUMMARY:زفاف ${c.groomName} و ${c.brideName}`,`LOCATION:${c.venueName} - ${c.venueAddress}`,"END:VEVENT","END:VCALENDAR"].join("\r\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"})); a.download="wedding.ics"; a.click();
+};
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); }),{threshold:.12});
+$$(".fade-up").forEach(el=>io.observe(el));
+
+/* PWA */
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); deferredPrompt=e; $("#installBtn").classList.remove("hidden"); });
+$("#installBtn").onclick=async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; $("#installBtn").classList.add("hidden"); };
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){ navigator.serviceWorker.register("sw.js").catch(()=>{}); }
+
+loadData();
+</script>
+</body>
+</html>

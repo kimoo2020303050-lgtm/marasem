@@ -1,0 +1,27 @@
+{
+  "background_color": "#FBF7EF",
+  "description": "مراسم | MARASEM — دعوات رقمية فاخرة تليق بمناسباتكم: عدّاد تنازلي، موقع القاعة، تأكيد حضور ودفتر تهاني",
+  "dir": "rtl",
+  "display": "standalone",
+  "icons": [
+    {
+      "purpose": "any maskable",
+      "sizes": "192x192",
+      "src": "icons/icon-192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any maskable",
+      "sizes": "512x512",
+      "src": "icons/icon-512.png",
+      "type": "image/png"
+    }
+  ],
+  "lang": "ar",
+  "name": "مراسم | MARASEM — دعوات رقمية فاخرة",
+  "orientation": "portrait",
+  "scope": "./",
+  "short_name": "مراسم",
+  "start_url": "./index.html",
+  "theme_color": "#0F1F1C"
+}
