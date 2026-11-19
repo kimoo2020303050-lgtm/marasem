@@ -80,6 +80,22 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
       <label><span>رابط صورة الواجهة (اختياري)</span><input name="heroImage" type="url" placeholder="https://..."></label>
       <label><span>روابط صور إضافية للمعرض (افصل بينها بفاصلة)</span><input name="galleryUrls" placeholder="https://... , https://..."></label>
       <label class="md:col-span-2"><span>حكايتكم باختصار (اختياري)</span><textarea name="story" rows="3" placeholder="سطرين عن قصة العروسين تظهر في الدعوة..."></textarea></label>
+      <div class="md:col-span-2">
+        <span class="text-sm font-bold block mb-2" style="font-size:.85rem;font-weight:700">اختر الباقة *</span>
+        <div class="grid md:grid-cols-2 gap-3">
+          <label class="!p-0 cursor-pointer"><input type="radio" name="package" value="basic" class="!w-auto" style="display:none">
+            <div class="pkg-card border rounded-2xl p-4 h-full" data-pkg="basic" style="border-color:rgba(201,162,75,.4)">
+              <div class="flex items-center justify-between"><b>الباقة الأساسية</b><b class="text-gold-dark text-xl">350 ج</b></div>
+              <ul class="text-xs leading-6 mt-2 text-ink/60"><li>✓ قالب من قوالب مراسم + لينك خاص</li><li>✓ عدّاد تنازلي + خريطة القاعة</li><li>✓ تأكيد حضور RSVP + كارت QR</li></ul>
+            </div></label>
+          <label class="!p-0 cursor-pointer"><input type="radio" name="package" value="premium" class="!w-auto" style="display:none" checked>
+            <div class="pkg-card border-2 rounded-2xl p-4 h-full" data-pkg="premium" style="border-color:#C9A24B;background:#FBF3DF">
+              <div class="flex items-center justify-between"><b>الباقة المميزة ⭐</b><b class="text-gold-dark text-xl">550 ج</b></div>
+              <ul class="text-xs leading-6 mt-2 text-ink/60"><li>✓ كل مميزات الأساسية</li><li>✓ فتح دعوة سينمائي + موسيقى خاصة</li><li>✓ معرض صور موسّع + دفتر تهاني</li><li>✓ كارت QR باسم كل ضيف + أولوية دعم</li></ul>
+            </div></label>
+        </div>
+      </div>
+      <label class="md:col-span-2"><span>رابط موسيقى الدعوة (اختياري — ميزة المميزة)</span><input name="musicUrl" type="url" placeholder="https://...mp3 — أو سيبها فاضية وهنستخدم موسيقى مراسم الهادية"></label>
       <label><span>رقم واتساب صاحب الدعوة (للإدارة والتواصل)</span><input name="creatorPhone" type="tel" placeholder="01xxxxxxxxx"></label>
       <label><span>رقم سري لإدارة دعوتك (6 أرقام) *</span><input required name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="اختر 6 أرقام واحفظها كويس"></label>
       <p class="md:col-span-2 text-xs text-ink/55 leading-6 bg-cream rounded-xl p-3">🔒 الرقم السري ده هو مفتاحك الوحيد بعد كده عشان تشوف مين أكّد الحضور وتعدّل دعوتك — احفظه في مكان آمن، مش هيظهر تاني.</p>
@@ -94,6 +110,7 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
       <p class="text-cream/70 text-sm mt-2">ده اللينك الخاص بدعوتك — شاركه مع معازيمك واتساب:</p>
       <div class="bg-white/10 rounded-xl px-4 py-3 mt-3 font-bold break-all text-gold-light" id="sLink" dir="ltr"></div>
       <div id="sQr" class="bg-white rounded-2xl p-3 w-[168px] h-[168px] mx-auto mt-4 flex items-center justify-center"></div>
+      <p class="text-sm mt-3">الباقة: <b id="sPackage" class="text-gold-light"></b></p>
       <p class="text-xs text-cream/60 mt-3">كود الدعوة: <b id="sCode" class="text-gold-light"></b> • لإرسال دعوة باسم ضيف معين زوّد في آخر اللينك: <span dir="ltr">?to=اسم+الضيف</span> — لو اللينك فيه ?id أصلاً استخدم &amp;to= بدل ?to</p>
       <div class="flex gap-3 justify-center mt-5 flex-wrap">
         <button class="btn-gold !py-2.5" id="copyLinkBtn">نسخ اللينك</button>
@@ -128,7 +145,7 @@ tailwind.config={theme:{extend:{colors:{ivory:'#FBF7EF',cream:'#F5EEDD',gold:{DE
 <script>
 /* ============ إعدادات المنصة ============ */
 const PLATFORM = {
-  APPS_SCRIPT_URL: "PUT_YOUR_PLATFORM_APPS_SCRIPT_WEB_APP_URL_HERE",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzBOxkgtkO_6F9ZqwLAEuCfldy6_i3F3rpkYuXXB0GsIeYvWL1Yyt14QIiHnKOuM7tuog/exec",
   INVITE_PAGE: "invite.html"
 };
 function scriptReady(){ return PLATFORM.APPS_SCRIPT_URL && !PLATFORM.APPS_SCRIPT_URL.startsWith("PUT_"); }
@@ -171,6 +188,9 @@ function chooseTpl(id,scroll){
   if(scroll) document.querySelector("#create").scrollIntoView({behavior:"smooth"});
 }
 renderTemplates();
+document.querySelectorAll('input[name="package"]').forEach(r=>r.addEventListener("change",()=>{
+  document.querySelectorAll(".pkg-card").forEach(c=>{ const on=c.dataset.pkg===r.value&&r.checked; c.style.borderColor=on?"#C9A24B":"rgba(201,162,75,.4)"; c.style.background=on?"#FBF3DF":""; });
+}));
 
 /* ============ توليد الكود والرابط ============ */
 function genCode(){
@@ -196,7 +216,7 @@ $("#createForm").addEventListener("submit", async e=>{
     venueName:fd.get("venueName"), venueAddress:fd.get("venueAddress"),
     mapsUrl, mapsEmbed: mapsUrl ? "" : "https://www.google.com/maps?q="+encodeURIComponent((fd.get("venueName")||"")+" "+(fd.get("venueAddress")||""))+"&output=embed",
     heroImage:fd.get("heroImage"), galleryUrls:fd.get("galleryUrls"),
-    story:fd.get("story"), creatorPhone:fd.get("creatorPhone"),
+    story:fd.get("story"), creatorPhone:fd.get("creatorPhone"), package:fd.get("package")||"basic", musicUrl:fd.get("musicUrl"),
     createdAt:new Date().toISOString()
   };
   let local=false;
@@ -211,6 +231,7 @@ $("#createForm").addEventListener("submit", async e=>{
 });
 function showSuccess(inv, local){
   const url=inviteUrl(inv.code);
+  const PKGS={basic:"الأساسية — 350 ج",premium:"المميزة — 550 ج"}; $("#sPackage").textContent = PKGS[inv.package]||inv.package||"";
   $("#sNames").textContent = `${inv.groomName} & ${inv.brideName}`;
   $("#sLink").textContent=url; $("#sCode").textContent=inv.code;
   $("#openInvite").href=url;
